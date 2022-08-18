@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class Graph {
+public class DepthFirstSearch {
 
     public static void main(String[] args) {
 
-        // Adjacency Matrix = An array to store 1's/0's to represent edges
-        //				       # of rows =    # of unique nodes
-        //				       # of columns = # of unique nodes
+        // DepthFirstSearch algorithm on Adjacency Matrix
+        // Depth First Search    =   Pick a route, keep going.
+        //					         If you reach a dead end, or an already visited node,
+        //					         backtrack to a previous node with unvisited adjacent neighbors
 
-        //					  runtime complexity to check an Edge: O(1)
-        //					  space complexity: O(v^2)
 
-        Graph graph = new Graph(5);
+
+        DepthFirstSearch graph = new DepthFirstSearch(5);
 
         graph.addNode(new Node('A'));
         graph.addNode(new Node('B'));
@@ -21,7 +21,7 @@ public class Graph {
 
         graph.addEdge(0, 1);
         graph.addEdge(1, 2);
-        graph.addEdge(1, 4); // I forgot this line in the video
+        graph.addEdge(1, 4);
         graph.addEdge(2, 3);
         graph.addEdge(2, 4);
         graph.addEdge(4, 0);
@@ -29,14 +29,14 @@ public class Graph {
 
         graph.print();
 
-        //System.out.println(graph.checkEdge(0, 1));
+        graph.depthFirstSearch(1);
 
     }
 
     ArrayList<Node> nodes;
     int[][] matrix;
 
-    Graph(int size) {
+    DepthFirstSearch(int size) {
         nodes = new ArrayList<>();
         matrix = new int[size][size];
     }
@@ -72,6 +72,30 @@ public class Graph {
             System.out.println();
         }
     }
+
+    public void depthFirstSearch(int src){
+        boolean[] visited = new boolean[matrix.length];
+        dFSHelper(src, visited);
+    }
+
+    private void dFSHelper(int src, boolean[] visited) {
+        if (visited[src]){
+            return;
+        }
+        else {
+            visited[src] = true;
+            System.out.println(nodes.get(src).data + " = visited");
+        }
+
+        for (int i = 0; i < matrix.length; i++){
+            if (matrix[src][i] == 1){
+                dFSHelper(i, visited);
+            }
+        }
+        return;
+
+    }
+
 
     public static class Node {
 
